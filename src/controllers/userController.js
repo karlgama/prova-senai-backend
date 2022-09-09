@@ -1,5 +1,5 @@
-const User = require("../models/User")
-const { InvalidArgumentError, InternalServerError } = require("../errors")
+const User = require("../models/user/User");
+const { InvalidArgumentError, InternalServerError } = require("../errors");
 const jwt = require("jsonwebtoken");
 
 class UserController {
@@ -27,47 +27,46 @@ class UserController {
       } else if (erro instanceof InternalServerError) {
         res.status(500).json({ erro: erro.message });
       } else {
+        console.log(erro)
         res.status(500).json({ erro: erro.message });
       }
     }
   }
   static async findById(req, res) {
-    const { id } = req.params
-    const user = await User.findById(id)
-    res.status(200).json(user)
+    const { id } = req.params;
+    const user = await User.findById(id);
+    res.status(200).json(user);
   }
   static async delete(req, res) {
-    const user = await User.findById(req.params.id)
+    const user = await User.findById(req.params.id);
     try {
       await user.delete();
-      res.status(204).send()
+      res.status(204).send();
     } catch (error) {
-      console.log(error)
-      res.status(500).json({ error })
+      console.log(error);
+      res.status(500).json({ error });
     }
   }
 
   static async login(req, res) {
-    const {email,password} = req.body
+    const { email, password } = req.body;
     const user = await User.findByEmail(email);
     const token = await UserController.buildToken(user);
     res.set("Authorization", token);
-    res.status(204).send();
+    res.status(200).json({ token });
   }
 
   static async buildToken(user) {
     const payload = {
       id: user.id,
     };
-    console.log("build user: ", user)
+    console.log("build user: ", user);
     const token = jwt.sign(payload, `${process.env.SECRET_JWT}`, {
       expiresIn: "15m",
     });
-    console.log("build token",payload)
+    console.log("build token", payload);
     return token;
   }
-
-
 }
 
 module.exports = UserController;

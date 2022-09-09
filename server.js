@@ -1,5 +1,6 @@
 const { strategyAuthentication } = require("./src/auth/strategyAuthentication");
 const app = require("./app");
+const config = require('./config')
 require('dotenv').config();
 
 const port = 3000;

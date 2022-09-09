@@ -10,9 +10,21 @@ const USERS_SCHEMA=`
     )
 `;
 
+const BOOKS_SCHEMA=`
+    CREATE TABLE IF NOT EXISTS books (
+        codeLivro INTEGER PRIMARY KEY AUTOINCREMENT,
+        imgPeq VARCHAR(100),
+        imgGrd VARCHAR(100),
+        titulo VARCHAR(100),
+        preco DECIMAL(10,2) NOT NULL,
+        detalhes TEXT       
+    )
+`;
+   
 db.serialize(() => {
     db.run('PRAGMA foreign_keys=ON');
     db.run(USERS_SCHEMA);
+    db.run(BOOKS_SCHEMA);
   
     db.each('SELECT * FROM users', (err, user) => {
       console.log('Users: ');
