@@ -1,4 +1,4 @@
-const Book = require("../models/book/Book");// reference to our db
+const Book = require("../models/book/Book"); // reference to our db
 
 class BookController {
   static async list(req, res) {
@@ -7,14 +7,15 @@ class BookController {
   }
 
   static async create(req, res) {
-    const { titulo, preco, detalhes,imgPeq,imgGrd } = req.body;
+    const { titulo, preco, detalhes, imgPeq, imgGrd } = req.body;
+    console.log("peq", imgPeq);
     try {
       const book = new Book({
         titulo,
         preco,
         detalhes,
       });
-      book.create()
+      book.create();
       res.status(201).json();
     } catch (erro) {
       if (erro instanceof InvalidArgumentError) {
@@ -26,8 +27,6 @@ class BookController {
       }
     }
   }
-
-
 
   static async update(req, res) {
     const { codeLivro, titulo, preco, detalhes } = req.body;
