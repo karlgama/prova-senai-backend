@@ -1,8 +1,7 @@
 var admin = require("firebase-admin");
 
 var serviceAccount = require("../../firebase-key.json");
-const BUCKET = "teste-ds3-5ded5.appspot.com";
-
+const BUCKET = "teste-ds3-5ded5.appspot.com/";
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   storageBucket: BUCKET,
@@ -30,8 +29,7 @@ const uploadImage = (req, res, next) => {
 
   stream.on("finish", async () => {
     await file.makePublic();
-    req.file.firebaseurl = `https://storage.googlapis.com/${BUCKET}/${fileName}`;
-
+    req.imgPeq = `https://firebasestorage.googleapis.com/v0/b/${BUCKET}o/${fileName}?alt=media`;
     return next();
   });
 

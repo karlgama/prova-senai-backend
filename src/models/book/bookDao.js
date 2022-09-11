@@ -22,9 +22,10 @@ module.exports = {
         `INSERT INTO books(
                     titulo,
                     preco,
-                    detalhes
-                ) VALUES(?,?,?)`,
-        [book.titulo, book.preco, book.detalhes],
+                    detalhes,
+                    imgPeq
+                ) VALUES(?,?,?,?)`,
+        [book.titulo, book.preco, book.detalhes,book.imgPeq],
         (error) => {
           if (error) {
             reject(new InternalServerError("Error adding book"));

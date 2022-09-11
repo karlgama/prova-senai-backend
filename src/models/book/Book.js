@@ -6,8 +6,8 @@ class Book {
     this.codeLivro = book.codeLivro;
     this.titulo = book.titulo;
     this.preco = book.preco;
-    // this.imgPeq = book.imdPeq
-    // this.imgGrd = book.imgGrd
+    this.imgPeq = book.imgPeq
+    this.imgGrd = book.imgGrd
     this.detalhes = book.detalhes;
   }
 

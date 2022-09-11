@@ -2,13 +2,7 @@ const { Router } = require("express");
 const BookController = require("../controllers/bookController");
 const middlewareAuth = require("../middlewares/authentication");
 const router = Router();
-const multer = require("multer");
-
-const Multer = multer({
-  storage: multer.memoryStorage(),
-  limits: 1024 * 1024,
-});
-const uploadImage = require("../services/firebase");
+const { Multer, uploadImage } = require("../middlewares/multer");
 
 router.get("/books", BookController.list);
 router.post(
