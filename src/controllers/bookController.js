@@ -1,5 +1,5 @@
-const Book = require("../models/book/Book");// reference to our db
-
+const Book = require("../models/book/Book"); // reference to our db
+const { InvalidArgumentError, InternalServerError } = require("../errors");
 class BookController {
   static async list(req, res) {
     const books = await Book.list();
@@ -7,14 +7,18 @@ class BookController {
   }
 
   static async create(req, res) {
-    const { titulo, preco, detalhes,imgPeq,imgGrd } = req.body;
+    const { titulo, preco, detalhes } = req.body;
+    const imgPeq = req.imgPeq;
+    const imgGrd = req.imgGrd ? req.imgGrd : "";
     try {
       const book = new Book({
         titulo,
         preco,
         detalhes,
+        imgPeq,
+        imgGrd,
       });
-      book.create()
+      book.create();
       res.status(201).json();
     } catch (erro) {
       if (erro instanceof InvalidArgumentError) {
@@ -26,8 +30,6 @@ class BookController {
       }
     }
   }
-
-
 
   static async update(req, res) {
     const { codeLivro, titulo, preco, detalhes } = req.body;
