@@ -10,6 +10,7 @@ admin.initializeApp({
 const bucket = admin.storage().bucket();
 
 const uploadImage = (req, res, next) => {
+  console.log(req.files)
   const imgPeq = req.files.imgPeq[0];
   const imgGrd = req.files.imgGrd[0];
 
