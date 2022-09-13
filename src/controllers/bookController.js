@@ -8,7 +8,9 @@ class BookController {
 
   static async create(req, res) {
     const { titulo, preco, detalhes } = req.body;
-    const imgPeq = req.imgPeq;
+    console.log(req.imgPeq)
+    console.log(req.imgGrd)
+    const imgPeq = req.imgPeq ? req.imgPeq : "";
     const imgGrd = req.imgGrd ? req.imgGrd : "";
     try {
       const book = new Book({
