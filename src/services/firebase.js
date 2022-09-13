@@ -10,30 +10,50 @@ admin.initializeApp({
 const bucket = admin.storage().bucket();
 
 const uploadImage = (req, res, next) => {
-  if (!req.file) return next();
+  const imgPeq = req.files.imgPeq[0];
+  const imgGrd = req.files.imgGrd[0];
 
-  const img = req.file;
-  const fileName = Date.now() + "." + img.originalname.split(".").pop();
-  console.log(fileName);
-  const file = bucket.file(fileName);
+  const peqFileName =
+    "peq" + Date.now() + "." + imgPeq.originalname.split(".").pop();
+  const grdFileName =
+    "grd" + Date.now() + "." + imgGrd.originalname.split(".").pop();
 
-  const stream = file.createWriteStream({
+  const filePeq = bucket.file(peqFileName);
+  const fileGrd = bucket.file(grdFileName);
+
+  const streamPeq = filePeq.createWriteStream({
     metadata: {
-      contentType: img.mimetype,
+      contentType: filePeq.mimetype,
     },
   });
 
-  stream.on("error", (e) => {
+  const streamGrd = fileGrd.createWriteStream({
+    metadata: {
+      contentType: fileGrd.mimetype,
+    },
+  });
+  streamPeq.on("error", (e) => {
+    console.error(e);
+  });
+  streamGrd.on("error", (e) => {
     console.error(e);
   });
 
-  stream.on("finish", async () => {
-    await file.makePublic();
-    req.imgPeq = `https://firebasestorage.googleapis.com/v0/b/${BUCKET}o/${fileName}?alt=media`;
-    return next();
+  streamPeq.on("finish", async () => {
+    await filePeq.makePublic();
+    req.imgPeq = `https://firebasestorage.googleapis.com/v0/b/${BUCKET}o/${peqFileName}?alt=media`;
+    // console.log(req.imgPeq);
+    if (req.imgPeq && req.imgGrd != null) next();
+  });
+  streamGrd.on("finish", async () => {
+    await fileGrd.makePublic();
+    req.imgGrd = `https://firebasestorage.googleapis.com/v0/b/${BUCKET}o/${grdFileName}?alt=media`;
+    // console.log(req.imgGrd);
+    if (req.imgPeq && req.imgGrd != null) next();
   });
 
-  stream.end(img.buffer);
+  streamGrd.end(imgGrd.buffer);
+  streamPeq.end(imgPeq.buffer);
 };
 
 module.exports = uploadImage;

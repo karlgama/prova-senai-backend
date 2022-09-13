@@ -23,9 +23,10 @@ module.exports = {
                     titulo,
                     preco,
                     detalhes,
-                    imgPeq
-                ) VALUES(?,?,?,?)`,
-        [book.titulo, book.preco, book.detalhes,book.imgPeq],
+                    imgPeq,
+                    imgGrd
+                ) VALUES(?,?,?,?,?)`,
+        [book.titulo, book.preco, book.detalhes,book.imgPeq,book.imgGrd],
         (error) => {
           if (error) {
             reject(new InternalServerError("Error adding book"));
